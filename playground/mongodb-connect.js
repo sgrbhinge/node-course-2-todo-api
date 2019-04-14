@@ -2,30 +2,42 @@ const express = require('express');
 const app = express();
 // useNewUrlParser = true;
 // db connnetion
-const mongoose = require('mongodb').MongoClient;
-// mongoose.connect('mongodb://localhost:27017/?serverSelectionTimeoutMS=5000&connectTimeoutMS=10000&3t.uriVersion=3&3t.connection.name=todo-api')
-mongoose.useNewUrlParser = true;
+// const mongoose = require('mongodb').MongoClient;
+const mongoose = require('mongoose');
+// mongoose.useNewUrlParser = true;
+// mongoose.connect('mongodb://localhost:27017/todo-api')
 
 mongoose.connect('mongodb+srv://sgrbhinge:sgrfusion@sgr1-axumk.mongodb.net/node-angular?retryWrites=true')
 .then((dbResponse) => {
     console.log('Connected to Mongo!');
-    const chk = {
-        name: 'Sagar',
-        age: 32,
-        hobby: 'film-making'
-    };
-    const {hobby} = chk;
-    console.log(hobby);
-    // db.getCollection("users").insertOne({
-    //     name: 'Sagar',
-    //     age: 31
-    //     })
-    // dbResponse.getCollection("posts").find({});
-        // text: 'Sagar',
-        // age: 31
 })
 .catch (()=> {
     console.log("Connection failed!");
 });
 
-module.exports = app;
+const myList = mongoose.model('list', {
+    text: {type: String, minlength: 3},
+    completed: {type: Boolean, default: false},
+    completedAt: {type: Number} 
+});
+
+var newList = new myList({
+    text: 'ge',
+//    completed: true,
+    completedAt: 123557887
+});
+
+newList.save().then((res) => {
+    console.log(res);
+}).catch((err) => {
+    console.log('err is here', err);
+});
+
+const chk = {
+    name: 'Sagar',
+    age: 32,
+    hobby: 'film-making'
+};
+const myHobby = {hobby} = chk;
+
+// module.exports = app;
